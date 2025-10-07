@@ -27,7 +27,7 @@
     },
     {
       "name": "bloc",
-      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/bloc-9.0.0",
+      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/bloc-9.0.1",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
@@ -255,9 +255,9 @@
     },
     {
       "name": "pool",
-      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/pool-1.5.1",
+      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/pool-1.5.2",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "3.4"
     },
     {
       "name": "pub_semver",
@@ -387,7 +387,7 @@
     },
     {
       "name": "watcher",
-      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/watcher-1.1.3",
+      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/watcher-1.1.4",
       "packageUri": "lib/",
       "languageVersion": "3.1"
     },
@@ -440,7 +440,7 @@
       "languageVersion": "3.9"
     },
     {
-      "name": "counter_cubit",
+      "name": "counter",
       "rootUri": "../examples/counter_cubit",
       "packageUri": "lib/",
       "languageVersion": "3.9"

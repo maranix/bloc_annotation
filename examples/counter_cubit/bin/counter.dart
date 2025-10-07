@@ -1,7 +1,7 @@
 import 'dart:convert';
 import "dart:io" as io;
 
-import 'package:counter_cubit/counter_cubit.dart';
+import 'package:counter/counter_cubit.dart';
 
 void main() {
   final counter = CounterCubit();
@@ -13,6 +13,9 @@ void main() {
   counter.stream.listen(_renderState);
 
   // Handle user input
+  if (io.Platform.isWindows) {
+    io.stdin.echoMode = false;
+  }
   io.stdin.lineMode = false;
   io.stdin
       .transform(utf8.decoder)

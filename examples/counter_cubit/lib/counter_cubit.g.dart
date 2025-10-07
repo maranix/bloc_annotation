@@ -3,9 +3,9 @@
 part of 'counter_cubit.dart';
 
 // **************************************************************************
-// CubitAnnotationGenerator
+// CubitClassGenerator
 // **************************************************************************
 
-abstract interface class _$CounterCubit extends Cubit<int> {
+abstract class _$CounterCubit extends Cubit<int> {
   _$CounterCubit(super.initialState);
 }
