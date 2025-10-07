@@ -3,15 +3,15 @@
   "packages": [
     {
       "name": "_fe_analyzer_shared",
-      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/_fe_analyzer_shared-88.0.0",
+      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/_fe_analyzer_shared-89.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.7"
+      "languageVersion": "3.9"
     },
     {
       "name": "analyzer",
-      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/analyzer-8.1.1",
+      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/analyzer-8.2.0",
       "packageUri": "lib/",
-      "languageVersion": "3.7"
+      "languageVersion": "3.9"
     },
     {
       "name": "args",
@@ -39,7 +39,7 @@
     },
     {
       "name": "build",
-      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/build-4.0.0",
+      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/build-4.0.1",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
@@ -57,13 +57,13 @@
     },
     {
       "name": "build_runner",
-      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/build_runner-2.8.0",
+      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/build_runner-2.9.0",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
     {
       "name": "build_test",
-      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/build_test-3.4.0",
+      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/build_test-3.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
@@ -99,9 +99,9 @@
     },
     {
       "name": "code_builder",
-      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/code_builder-4.10.1",
+      "rootUri": "file:///C:/Users/Ryzen/AppData/Local/Pub/Cache/hosted/pub.dev/code_builder-4.11.0",
       "packageUri": "lib/",
-      "languageVersion": "3.5"
+      "languageVersion": "3.7"
     },
     {
       "name": "collection",
