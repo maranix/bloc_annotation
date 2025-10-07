@@ -1,6 +1,6 @@
 abstract class BaseAnnotation {
   const BaseAnnotation({
-    this.name,
+    this.name = "",
     this.copyWith = true,
     this.overrideEquality = true,
   });
@@ -8,7 +8,7 @@ abstract class BaseAnnotation {
   /// Name of the generated entity will be overriden by the provided value.
   ///
   /// Defaults to the name of the annotated entity with `_$` as prefix.
-  final String? name;
+  final String name;
 
   /// Property indicating whether to enable copyWith method generation.
   ///
