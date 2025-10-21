@@ -34,12 +34,12 @@
         "build_verify",
         "code_builder",
         "dart_style",
-        "source_gen",
-        "source_gen_test"
+        "source_gen"
       ],
       "devDependencies": [
         "build_runner",
         "lints",
+        "source_gen_test",
         "test"
       ]
     },
@@ -59,7 +59,7 @@
     },
     {
       "name": "build_runner",
-      "version": "2.9.0",
+      "version": "2.10.0",
       "dependencies": [
         "analyzer",
         "args",
@@ -133,7 +133,7 @@
     },
     {
       "name": "bloc",
-      "version": "9.0.1",
+      "version": "9.1.0",
       "dependencies": [
         "meta"
       ]
@@ -163,7 +163,7 @@
     },
     {
       "name": "source_gen",
-      "version": "4.0.1",
+      "version": "4.0.2",
       "dependencies": [
         "analyzer",
         "async",
@@ -213,7 +213,7 @@
     },
     {
       "name": "build",
-      "version": "4.0.1",
+      "version": "4.0.2",
       "dependencies": [
         "analyzer",
         "crypto",
@@ -225,7 +225,7 @@
     },
     {
       "name": "analyzer",
-      "version": "8.2.0",
+      "version": "8.4.0",
       "dependencies": [
         "_fe_analyzer_shared",
         "collection",
@@ -414,7 +414,7 @@
     },
     {
       "name": "build_daemon",
-      "version": "4.0.4",
+      "version": "4.1.0",
       "dependencies": [
         "built_collection",
         "built_value",
@@ -590,7 +590,7 @@
     },
     {
       "name": "build_test",
-      "version": "3.4.1",
+      "version": "3.5.0",
       "dependencies": [
         "build",
         "build_config",
@@ -631,7 +631,7 @@
     },
     {
       "name": "_fe_analyzer_shared",
-      "version": "89.0.0",
+      "version": "91.0.0",
       "dependencies": [
         "meta"
       ]
