@@ -11,7 +11,7 @@ final class StateClassGenerator extends GeneratorForAnnotation<StateClass> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
-    final elementGenerator = ClassCodeProducer(element);
+    final _ = ClassCodeProducer(element);
 
     return super.generateForAnnotatedElement(element, annotation, buildStep);
   }

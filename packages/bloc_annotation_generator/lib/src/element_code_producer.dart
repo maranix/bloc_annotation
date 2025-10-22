@@ -67,9 +67,6 @@ final class ClassCodeProducer extends ElementCodeProducer {
   String overrideToString([List<ElementAttribute>? attributes]) {
     final attrs = attributes ?? collectAttributes();
 
-    // TODO: We should add state here as well incase it is a Cubit or Bloc
-    //
-    // Otherwise we are already printing out the attributes of the Event or State like classes
     if (attrs.isEmpty) {
       if (stringifyState) return '\'$name(state: \$state)\'';
 
