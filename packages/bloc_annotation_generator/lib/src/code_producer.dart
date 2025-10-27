@@ -139,9 +139,9 @@ final class BasicClassCodeProducer extends ClassCodeProducer {
     }
 
     final fields = _attributes.map((a) => '${a.name}: \$${a.name}').join(', ');
-    final statePart = stringifyState ? 'state: \$state)\'' : '';
+    final statePart = stringifyState ? ', state: \$state)\'' : '';
 
-    return '\'$name($fields$statePart)\'';
+    return '\'$name($fields$statePart)\';';
   }
 
   @override
@@ -170,7 +170,7 @@ final class BasicClassCodeProducer extends ClassCodeProducer {
     }
 
     final remainingAttribute = _attributes.last.name;
-    builder.write('$remainingAttribute == this.$remainingAttribute');
+    builder.write('$remainingAttribute == this.$remainingAttribute;');
 
     return builder.toString();
   }
