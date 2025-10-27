@@ -33,6 +33,31 @@ abstract class ClassCodeProducer {
   ///   refer to [collectAttributes] method.
   List<ElementAttribute> get attributes;
 
+  /// Defines which [FieldElement] instances from the [element]
+  /// should be collected by the [collectAttributes] method.
+  ///
+  /// Implementations should return a filtered list of fields that are
+  /// relevant for code generation (e.g., only public and `final` fields).
+  ///
+  /// ---
+  /// ### Relationship to [collectAttributes]
+  /// - [collectAttributes] uses this getter to determine which fields
+  ///   will be transformed into [ElementAttribute] records.
+  /// - Overriding this getter allows subclasses to customize what
+  ///   attributes are included, without modifying the collection logic itself.
+  ///
+  /// ---
+  /// ### Example
+  /// ```dart
+  /// @override
+  /// List<FieldElement> get collectableAttributes =>
+  ///     (element as ClassElement).fields.where((f) => f.isPublic && f.isFinal).toList();
+  /// ```
+  ///
+  /// By default, most implementations will include only `final` and `public`
+  /// fields to ensure immutability and predictable code generation.
+  List<FieldElement> get collectableAttributes;
+
   /// Clears and **re-collects** attributes from the [element].
   ///
   /// Implementations typically filter for relevant fields (e.g., public, final fields)
@@ -107,13 +132,19 @@ final class BasicClassCodeProducer extends ClassCodeProducer {
   List<ElementAttribute> get attributes => UnmodifiableListView(_attributes);
 
   @override
+  List<FieldElement> get collectableAttributes => (element as ClassElement)
+      .fields
+      .where((f) => f.isFinal && f.isPublic)
+      .toList();
+
+  @override
   List<ElementAttribute> collectAttributes() => List.from(
     _attributes
       ..clear()
       ..addAll(
-        (element as ClassElement).fields
-            .where((f) => f.isFinal && f.isPublic)
-            .map((f) => (name: f.displayName, type: f.type.getDisplayString())),
+        collectableAttributes.map(
+          (f) => (name: f.displayName, type: f.type.getDisplayString()),
+        ),
       ),
   );
 
