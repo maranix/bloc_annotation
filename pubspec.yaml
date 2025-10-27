@@ -12,3 +12,4 @@ workspace:
   - packages/bloc_annotation
   - packages/bloc_annotation_generator
   - examples/counter_cubit
+  - examples/random_facts
