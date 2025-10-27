@@ -3,28 +3,22 @@ final class AttributeValue {
     required this.name,
     required this.type,
     this.isNullable = false,
+    this.isNamed = false,
   });
 
   final String name;
   final Type type;
   final bool isNullable;
-
-  @override
-  int get hashCode => Object.hash(name, type, isNullable);
-
-  @override
-  bool operator ==(covariant AttributeValue other) {
-    if (identical(this, other)) return true;
-    if (other.runtimeType != runtimeType) return false;
-
-    return name == other.name &&
-        type == other.type &&
-        isNullable == other.isNullable;
-  }
+  final bool isNamed;
 }
 
 final class Attributes {
-  const Attributes(this.values);
+  const Attributes() : values = const {};
+
+  const Attributes.of(this.values);
 
   final Set<AttributeValue> values;
+
+  bool get isEmpty => values.isEmpty;
+  bool get isNotEmpty => values.isNotEmpty;
 }
