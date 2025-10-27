@@ -14,7 +14,10 @@ final class CubitClassGenerator extends GeneratorForAnnotation<CubitClass> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
-    final elementProducer = ClassCodeProducer(element, stringifyState: true);
+    final elementProducer = ClassCodeProducer.withCollectedAttributes(
+      element,
+      stringifyState: true,
+    );
 
     final annotationProps = annotation.getCubitClassAnnotationProperties();
 
