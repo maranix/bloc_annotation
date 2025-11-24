@@ -1,6 +1,6 @@
 name: bloc_annotation
 description: Annotations for bloc_annotation code generation package
-version: 1.0.0
+version: 0.5.0
 homepage: https://github.com/Myrkheimr/bloc_annotation/tree/main/bloc_annotation
 repository: https://github.com/Myrkheimr/bloc_annotation
 issue_tracker: https://github.com/Myrkheimr/bloc_annotation/issues
