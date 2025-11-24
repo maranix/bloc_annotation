@@ -98,6 +98,45 @@ The generator supports global configuration options in `build.yaml` (e.g., enabl
 
 Generated files will appear alongside your annotated source code.
 
+## State Inference
+
+There are two ways to specify the state type for BLoC and Cubit:
+
+### 1. Explicit State Parameter (Recommended)
+
+```dart
+@BlocMeta(state: int)
+final class CounterBloc extends _$CounterBloc {
+  CounterBloc() : super(0);
+  
+  @EventMeta()
+  void increment() => emit(state + 1);
+}
+```
+
+**Advantages:**
+- No linter warnings
+- Clear and explicit
+- Easier to read
+
+### 2. Field-Based Inference
+
+```dart
+@BlocMeta()
+final class CounterBloc extends _$CounterBloc {
+  CounterBloc() : super(0);
+  
+  @StateMeta()
+  // ignore: unused_field
+  late final int _state;
+  
+  @EventMeta()
+  void increment() => emit(state + 1);
+}
+```
+
+**Note:** Requires `// ignore: unused_field` comment to suppress linter warnings.
+
 ## Example
 
 See the [`example/`](example/) directory for a full working sample, including annotated class definitions and generated output.
