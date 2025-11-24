@@ -7,9 +7,5 @@ part of 'random_fact_bloc.dart';
 // **************************************************************************
 
 abstract class _$RandomFactBloc extends Bloc<RandomFactEvent, List<Fact>> {
-  _$RandomFactBloc(super.initialState) {
-    on<FetchRandomFact>(fetchRandomFact);
-  }
-
-  void fetchRandomFact(FetchRandomFact event, Emitter<List<Fact>> emit);
+  _$RandomFactBloc(super.initialState);
 }
