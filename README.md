@@ -1,43 +1,42 @@
 # bloc_annotation
 
-**bloc_annotation** is a complementary package designed to streamline BLoC code generation for Dart and Flutter applications. By leveraging code generation, this package accelerates development time & reduces boilerplate code writing and aims to improve overall developer experience while working with BLoC state management.
-
+**bloc_annotation** is a complementary package designed to streamline BLoC code generation for Dart and Flutter applications. By leveraging code generation, this package accelerates development time, reduces boilerplate code writing, and aims to improve overall developer experience while working with BLoC state management.
 
 ## Overview
 
 - **bloc_annotation**  
-  Defines annotation classes (`@Bloc`, `@Event`, `@State` & `@Cubit`) used to mark BLoC-related elements in your Dart/Flutter codebase.
+  Defines annotation classes (`@BlocMeta`, `@CubitMeta`, `@EventMeta`, `@StateMeta`) used to mark BLoC-related elements in your Dart/Flutter codebase.
 
-- **bloc_annotation_gen**  
+- **bloc_annotation_generator**  
   Provides a code generator that processes annotations (via source_gen/build_runner) and generates boilerplate BLoC, Event, and State code automatically.
-
 
 ## Features
 
 - **Reduce Boilerplate:**  
     - Generate Cubit, BLoC (classes, events, and states) with minimal manual effort.
+    - Automatically wire up events to handler methods.
 
 - **Modern Architecture:**  
   Follows community patterns for annotation/codegen separation, inspired by `json_serializable`, `freezed` & `dart_mappable`.
-
 
 ## Installation
 
 Add dependencies to your `pubspec.yaml`:
 
 ```yaml
-    dependencies:
-    bloc_annotation: ^0.1.0
+dependencies:
+  bloc_annotation: ^0.5.0
+  flutter_bloc: ^8.1.3 # or bloc
 
-    dev_dependencies:
-    bloc_annotation_gen: ^0.1.0
-    build_runner: ^2.4.0
+dev_dependencies:
+  bloc_annotation_generator: ^0.5.0
+  build_runner: ^2.4.0
 ```
 
 Run:
 
 ```bash
-    flutter pub get
+flutter pub get
 ```
 
 ---
@@ -46,50 +45,72 @@ Run:
 
 ### 1. Annotate Your Classes
 
+#### BLoC Example
+
 ```dart
 import 'package:bloc_annotation/bloc_annotation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-@Bloc()
-class CounterBloc {
-    @State()
-    state() => 0;
+part 'counter_bloc.g.dart';
 
-    @Event()
-    void increment();
+@BlocMeta(state: int)
+final class CounterBloc extends _$CounterBloc {
+  CounterBloc() : super(0);
 
-    @Event()
-    void decrement();
+  @EventMeta()
+  void increment() => emit(state + 1);
+
+  @EventMeta()
+  void decrement() => emit(state - 1);
 }
 ```
-### 2. Run Code Generation
+
+#### Cubit Example
 
 ```dart
-    dart run build_runner build
-    # or
-    dart run build_runner build --delete-conflicting-outputs
-    # or
-    dart run build_runner watch
+import 'package:bloc_annotation/bloc_annotation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+part 'counter_cubit.g.dart';
+
+@CubitMeta(state: int)
+final class CounterCubit extends _$CounterCubit {
+  CounterCubit() : super(0);
+
+  void increment() => emit(state + 1);
+  void decrement() => emit(state - 1);
+}
 ```
 
-Generated files will appear alongside your annotated source code.
+### 2. Run Code Generation
 
+```bash
+dart run build_runner build
+# or
+dart run build_runner build --delete-conflicting-outputs
+# or
+dart run build_runner watch
+```
+
+### 3. Configuration
+
+The generator supports global configuration options in `build.yaml` (e.g., enabling/disabling `copyWith`, `toString`, `equality`). See the [bloc_annotation_generator README](packages/bloc_annotation_generator/README.md#configuration) for details.
+
+Generated files will appear alongside your annotated source code.
 
 ## Example
 
 See the [`example/`](example/) directory for a full working sample, including annotated class definitions and generated output.
-
 
 ## Contributing
 
 We welcome pull requests, issues, and feature suggestions!  
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) for guidelines.
 
-
 ## License
 
 MIT License.  
 See [`LICENSE`](https://github.com/Myrkheimr/bloc_annotation) for details.
-
 
 ## Credits
 - Dart/Flutter community's efforts on building amazing code generation packages.
