@@ -6,13 +6,22 @@ typedef BaseAnnotationProperties = ({
   bool overrideToString,
 });
 
-/// Properties described in [CubitClass] annotaion from `bloc_annotation` package
-typedef CubitClassAnnotationProperties = ({
+/// Properties described in [Cubit] annotaion from `bloc_annotation` package
+typedef CubitAnnotationProperties = ({
   String name,
   bool copyWith,
   bool overrideEquality,
   bool overrideToString,
-  String state,
+  String? state,
+});
+
+/// Properties described in [Bloc] annotaion from `bloc_annotation` package
+typedef BlocAnnotationProperties = ({
+  String name,
+  bool copyWith,
+  bool overrideEquality,
+  bool overrideToString,
+  String? state,
 });
 
 /// Record type for describing a attributes of a Class

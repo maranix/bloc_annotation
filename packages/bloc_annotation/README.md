@@ -1,39 +1,58 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# bloc_annotation
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+Annotations for the `bloc_annotation_generator` package. This package provides the annotations used to generate BLoC and Cubit classes, reducing boilerplate and improving developer experience.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- `@Bloc`: Annotate your class to generate a BLoC.
+- `@Cubit`: Annotate your class to generate a Cubit.
+- `@Event`: Annotate methods to generate BLoC events.
+- `@State`: Annotate a method or field to define the state type.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add `bloc_annotation` to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  bloc_annotation: ^1.0.0
+
+dev_dependencies:
+  bloc_annotation_generator: ^1.0.0
+  build_runner: ^2.4.0
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+### Annotating a BLoC
 
 ```dart
-const like = 'sample';
+import 'package:bloc_annotation/bloc_annotation.dart';
+
+@Bloc()
+class CounterBloc {
+  @State()
+  int state() => 0;
+
+  @Event()
+  void increment();
+
+  @Event()
+  void decrement();
+}
 ```
 
-## Additional information
+### Annotating a Cubit
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+```dart
+import 'package:bloc_annotation/bloc_annotation.dart';
+
+@Cubit()
+class CounterCubit {
+  @State()
+  int state() => 0;
+
+  void increment() => emit(state + 1);
+  void decrement() => emit(state - 1);
+}
+```

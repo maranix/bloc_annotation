@@ -31,12 +31,32 @@ extension ConstantReaderAnnotationPropertiesX on ConstantReader {
     overrideToString: read("overrideToString").boolValue,
   );
 
-  /// Extracts the [CubitClass] annotation properties from the given ConstantReader
+  /// Extracts the [Cubit] annotation properties from the given ConstantReader
   ///
-  /// [CubitClass] annotation is provided via `bloc_annotation` package.
-  CubitClassAnnotationProperties getCubitClassAnnotationProperties() {
+  /// [Cubit] annotation is provided via `bloc_annotation` package.
+  CubitAnnotationProperties getCubitAnnotationProperties() {
     final baseProps = getBaseAnnotationProperties();
-    final state = read('state').typeValue.getDisplayString();
+    final state = read('state').isNull
+        ? null
+        : read('state').typeValue.getDisplayString();
+
+    return (
+      name: baseProps.name,
+      copyWith: baseProps.copyWith,
+      overrideEquality: baseProps.overrideEquality,
+      overrideToString: baseProps.overrideToString,
+      state: state,
+    );
+  }
+
+  /// Extracts the [Bloc] annotation properties from the given ConstantReader
+  ///
+  /// [Bloc] annotation is provided via `bloc_annotation` package.
+  BlocAnnotationProperties getBlocAnnotationProperties() {
+    final baseProps = getBaseAnnotationProperties();
+    final state = read('state').isNull
+        ? null
+        : read('state').typeValue.getDisplayString();
 
     return (
       name: baseProps.name,

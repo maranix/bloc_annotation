@@ -3,24 +3,21 @@
 part of 'counter_cubit.dart';
 
 // **************************************************************************
-// CubitClassGenerator
+// CubitGenerator
 // **************************************************************************
 
 abstract class _$CounterCubit extends Cubit<int> {
   _$CounterCubit(super.initialState);
 
-  CounterCubit copyWith() => CounterCubit();
-
   @override
   String toString() => 'CounterCubit(state: $state)';
 
   @override
-  int get hashCode => Object.hashAll([]);
+  int get hashCode => state.hashCode;
 
   @override
-  bool operator ==(covariant CounterCubit other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    if (other.runtimeType != runtimeType) return false;
-    return true;
+    return other is _$CounterCubit && other.state == state;
   }
 }

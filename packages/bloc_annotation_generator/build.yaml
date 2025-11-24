@@ -1,46 +1,14 @@
+targets:
+  $default:
+    builders:
+      bloc_annotation_generator:
+        enabled: true
+
 builders:
-  cubit_builder:
+  bloc_annotation_generator:
     import: "package:bloc_annotation_generator/builder.dart"
-    builder_factories: ["cubitClassBuilder"]
-    build_extensions: { ".dart": ["cubitClass.g.part"] }
+    builder_factories: ["blocAnnotationGenerator"]
+    build_extensions: { ".dart": [".bloc_annotation_generator.g.part"] }
     auto_apply: dependents
-    applies_builders: ["source_gen|combining_builder"]
     build_to: cache
-    defaults:
-      options:
-        run_only_if_triggered: true
-
-  state_class_builder:
-    import: "package:bloc_annotation_generator/builder.dart"
-    builder_factories: ["stateClassBuilder"]
-    build_extensions: { ".dart": ["stateClass.g.part"] }
-    auto_apply: dependents
     applies_builders: ["source_gen|combining_builder"]
-    build_to: cache
-    defaults:
-      options:
-        run_only_if_triggered: true
-
-  state_enum_builder:
-    import: "package:bloc_annotation_generator/builder.dart"
-    builder_factories: ["stateEnumBuilder"]
-    build_extensions: { ".dart": ["stateEnum.g.part"] }
-    auto_apply: dependents
-    applies_builders: ["source_gen|combining_builder"]
-    build_to: cache
-    defaults:
-      options:
-        run_only_if_triggered: true
-
-triggers:
-  bloc_annotation_generator:cubit_builder:
-    - import bloc_annotaion/bloc_annotation.dart
-    - annotation CubitClass
-
-  bloc_annotation_generator:state_class_builder:
-    - import bloc_annotaion/bloc_annotation.dart
-    - annotation StateClass
-
-  bloc_annotation_generator:state_enum_builder:
-    - import bloc_annotaion/bloc_annotation.dart
-    - annotation StateEnum

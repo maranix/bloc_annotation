@@ -1,8 +1,8 @@
 /// Support for doing something awesome.
-///
-/// More dartdocs go here.
+/// Annotations for bloc_annotation code generation package
 library;
 
-export './src/attributes.dart';
-export './src/cubit_class.dart';
-export './src/state_annotation.dart';
+export 'src/bloc.dart' show BlocMeta;
+export 'src/cubit.dart' show CubitMeta;
+export 'src/event.dart' show EventMeta;
+export 'src/state.dart' show StateMeta;

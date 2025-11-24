@@ -1,18 +1,17 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:bloc_annotation/bloc_annotation.dart';
 import 'package:bloc_annotation_generator/src/code_producer.dart';
-import 'package:build/build.dart';
-import 'package:source_gen/source_gen.dart';
-
 import 'package:bloc_annotation_generator/src/configuration.dart';
 import 'package:bloc_annotation_generator/src/extensions.dart';
+import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
+import 'package:source_gen/source_gen.dart';
 
-/// Generator for [StateMeta] annotated classes.
-final class StateGenerator extends GeneratorForAnnotation<StateMeta> {
-  /// Creates a new [StateGenerator] with optional [config].
-  StateGenerator([this.config = const GeneratorConfig()]);
+/// Generator for [EventMeta] annotated methods.
+final class EventGenerator extends GeneratorForAnnotation<EventMeta> {
+  /// Creates a new [EventGenerator] with optional [config].
+  EventGenerator([this.config = const GeneratorConfig()]);
 
   /// The global configuration for this generator.
   final GeneratorConfig config;
@@ -23,54 +22,63 @@ final class StateGenerator extends GeneratorForAnnotation<StateMeta> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
-    if (element is! ClassElement) {
+    if (element is! MethodElement) {
       throw InvalidGenerationSourceError(
         'Generator cannot target `${element.displayName}`.',
-        todo: 'Remove the @StateMeta annotation from `${element.displayName}`. '
-            '@StateMeta can only be applied to classes.',
+        todo: 'Remove the @EventMeta annotation from `${element.displayName}`. '
+            '@EventMeta can only be applied to methods.',
         element: element,
       );
     }
 
-    final producer = BasicClassCodeProducer.withCollectedAttributes(element);
-    final annotationProps = annotation.getBaseAnnotationProperties();
+    final enclosingClass = element.enclosingElement;
+    if (enclosingClass is! ClassElement) {
+      throw InvalidGenerationSourceError(
+        '@EventMeta annotated method must be within a class.',
+        todo: 'Move the method `${element.displayName}` inside a class.',
+        element: element,
+      );
+    }
 
-    final name = annotationProps.name.isEmpty 
-        ? '_\$${element.displayName}' 
+    final eventBaseName = '${enclosingClass.displayName}Event';
+    final annotationProps = annotation.getBaseAnnotationProperties();
+    
+    final producer = EventCodeProducer(element)..collectAttributes();
+    
+    final eventName = annotationProps.name.isEmpty 
+        ? producer.name 
         : annotationProps.name;
 
     final shouldCopyWith = annotationProps.copyWith && config.copyWith;
     final shouldToString = annotationProps.overrideToString && config.overrideToString;
     final shouldEquality = annotationProps.overrideEquality && config.overrideEquality;
 
-    // Read isSealed property
-    final isSealed = annotation.read('isSealed').boolValue;
+    final params = element.formalParameters
+        .where((p) => !p.type.getDisplayString().startsWith('Emitter'))
+        .toList();
 
-    final generatedClass = Class((b) => b
-      ..abstract = true
-      ..sealed = isSealed
-      ..name = name
-      ..constructors.add(Constructor((c) => c
-        ..constant = true
-        ..optionalParameters.addAll(producer.attributes.map((a) => Parameter((p) => p
-          ..name = a.name
-          ..type = refer(a.type)
-          ..named = true
-          ..required = true)))))
-      ..fields.addAll(producer.attributes.map((a) => Field((f) => f
-        ..name = a.name
-        ..type = refer(a.type)
+    final eventClass = Class((b) => b
+      ..name = eventName
+      ..extend = refer(eventBaseName)
+      ..fields.addAll(params.map((p) => Field((f) => f
+        ..name = p.name ?? ''
+        ..type = refer(p.type.getDisplayString())
         ..modifier = FieldModifier.final$)))
+      ..constructors.add(Constructor((c) => c
+        ..constant = params.isEmpty
+        ..optionalParameters.addAll(params.map((p) => Parameter((param) => param
+          ..name = p.name ?? ''
+          ..toThis = true
+          ..required = p.isRequired || p.isNamed)))))
       ..methods.addAll([
-        if (shouldCopyWith)
+        if (shouldCopyWith && params.isNotEmpty)
           Method((m) => m
-            ..returns = refer(name)
+            ..returns = refer(eventName)
             ..name = 'copyWith'
             ..lambda = true
-            ..optionalParameters.addAll(producer.attributes.map((a) => Parameter((p) => p
-              ..name = a.name
-              ..type = refer(a.type)
-              ..named = true)))
+            ..optionalParameters.addAll(params.map((p) => Parameter((param) => param
+              ..name = p.name ?? ''
+              ..type = refer(p.type.getDisplayString()))))
             ..body = Code(producer.copyWith())),
         if (shouldToString)
           Method((m) => m
@@ -94,7 +102,7 @@ final class StateGenerator extends GeneratorForAnnotation<StateMeta> {
             ..requiredParameters.add(Parameter((p) => p
               ..name = 'other'
               ..covariant = true
-              ..type = refer(name)))
+              ..type = refer(eventName)))
             ..body = Code(producer.overrideEqualityOperator())),
         ],
       ]));
@@ -102,6 +110,6 @@ final class StateGenerator extends GeneratorForAnnotation<StateMeta> {
     final emitter = DartEmitter();
     return DartFormatter(
       languageVersion: DartFormatter.latestLanguageVersion,
-    ).format(generatedClass.accept(emitter).toString());
+    ).format(eventClass.accept(emitter).toString());
   }
 }

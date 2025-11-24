@@ -1,39 +1,100 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# bloc_annotation_generator
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+Code generator for `bloc_annotation`. This package processes `@Bloc`, `@Cubit`, `@Event`, and `@State` annotations to generate boilerplate code for BLoC and Cubit classes.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Generates BLoC classes with event handling logic.
+- Generates Cubit classes.
+- Generates Event classes (sealed class hierarchy).
+- Generates `copyWith`, `toString`, `hashCode`, and `==` overrides for states and events (configurable).
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add `bloc_annotation_generator` to your `dev_dependencies`:
+
+```yaml
+dev_dependencies:
+  bloc_annotation_generator: ^1.0.0
+  build_runner: ^2.4.0
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+Run the build runner to generate code:
 
-```dart
-const like = 'sample';
+```bash
+dart run build_runner build
 ```
 
-## Additional information
+Or watch for changes:
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+```bash
+dart run build_runner watch
+```
+
+### Configuration
+
+You can configure the generator globally in your `build.yaml` file. The following options are available:
+
+| Option | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `copyWith` | `bool` | `true` | Generates `copyWith` method for the class. |
+| `overrideToString` | `bool` | `true` | Overrides `toString` method. |
+| `overrideEquality` | `bool` | `true` | Overrides `operator ==` and `hashCode`. |
+
+**Example `build.yaml`:**
+
+```yaml
+targets:
+  $default:
+    builders:
+      bloc_annotation_generator:
+        options:
+          copyWith: true
+          overrideToString: false
+          overrideEquality: true
+```
+
+### Example
+
+Input:
+
+```dart
+import 'package:bloc_annotation/bloc_annotation.dart';
+
+part 'counter_bloc.g.dart';
+
+@Bloc()
+class CounterBloc {
+  @State()
+  int state() => 0;
+
+  @Event()
+  void increment();
+}
+```
+
+Generated Output (`counter_bloc.g.dart`):
+
+```dart
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'counter_bloc.dart';
+
+sealed class CounterBlocEvent {
+  const CounterBlocEvent();
+}
+
+class Increment extends CounterBlocEvent {
+  const Increment();
+}
+
+abstract class _$CounterBloc extends Bloc<CounterBlocEvent, int> {
+  _$CounterBloc(super.initialState) {
+    on<Increment>((event, emit) => increment());
+  }
+
+  void increment();
+}
+```

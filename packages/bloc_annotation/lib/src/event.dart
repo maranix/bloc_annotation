@@ -1,15 +1,12 @@
 import 'package:bloc_annotation/src/annotation.dart';
 import 'package:meta/meta_meta.dart';
 
-@Target({TargetKind.classType})
-class CubitClass extends BaseAnnotation {
-  const CubitClass({
+@Target({TargetKind.method})
+class EventMeta extends BaseAnnotation {
+  const EventMeta({
     super.name,
     super.copyWith,
     super.overrideEquality,
     super.overrideToString,
-    required this.state,
   });
-
-  final Type state;
 }
