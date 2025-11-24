@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io' as io;
 import 'package:random_facts/random_fact_bloc.dart'
-    show RandomFactBloc, FetchRandomFact;
+    show RandomFactBloc, RandomFactEvent;
 import 'package:random_facts/random_facts.dart';
 
 void main() async {
@@ -11,7 +11,7 @@ void main() async {
 
   randomFactBloc.stream.listen(_renderState);
 
-  randomFactBloc.add(FetchRandomFact());
+  randomFactBloc.add(RandomFactEvent.fetchRandomFact());
 
   if (io.Platform.isWindows) {
     io.stdin.echoMode = false;
@@ -21,7 +21,7 @@ void main() async {
       .transform(utf8.decoder)
       .listen(
         (key) async => switch (key) {
-          'f' || 'F' => randomFactBloc.add(FetchRandomFact()),
+          'f' || 'F' => randomFactBloc.add(RandomFactEvent.fetchRandomFact()),
           's' || 'S' => _renderState(randomFactBloc.latestFact?.text),
           'l' || 'L' => _renderState(
             randomFactBloc.allFacts.map((f) => f.text).toList(),

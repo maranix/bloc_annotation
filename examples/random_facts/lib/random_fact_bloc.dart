@@ -10,15 +10,23 @@ part 'random_fact_bloc.g.dart';
 
 const _randomFactURL = "https://uselessfacts.jsph.pl/api/v2/facts/random";
 
-sealed class RandomFactEvent {}
+sealed class RandomFactEvent {
+  const RandomFactEvent();
 
-final class FetchRandomFact extends RandomFactEvent {}
+  factory RandomFactEvent.fetchRandomFact() = _FetchRandomFact;
+}
+
+final class _FetchRandomFact extends RandomFactEvent {
+  const _FetchRandomFact();
+}
 
 @BlocClass<RandomFactEvent, List<Fact>>()
 final class RandomFactBloc extends _$RandomFactBloc {
   RandomFactBloc({http.Client? client})
     : _client = client ?? http.Client(),
-      super(const []);
+      super(const []) {
+    on<_FetchRandomFact>(_onFetchRandomFact);
+  }
 
   final http.Client _client;
 
@@ -26,8 +34,10 @@ final class RandomFactBloc extends _$RandomFactBloc {
 
   List<Fact> get allFacts => state;
 
-  @override
-  void fetchRandomFact(FetchRandomFact event, Emitter<List<Fact>> emit) async {
+  void _onFetchRandomFact(
+    _FetchRandomFact event,
+    Emitter<List<Fact>> emit,
+  ) async {
     try {
       final uri = Uri.tryParse(_randomFactURL);
 
