@@ -5,7 +5,7 @@
 ## Overview
 
 - **bloc_annotation**  
-  Defines annotation classes (`@BlocMeta`, `@CubitMeta`, `@EventMeta`, `@StateMeta`) used to mark BLoC-related elements in your Dart/Flutter codebase.
+  Defines annotation classes (`@BlocClass`, `@CubitClass`, `@EventClass`) used to mark BLoC-related elements in your Dart/Flutter codebase.
 
 - **bloc_annotation_generator**  
   Provides a code generator that processes annotations (via source_gen/build_runner) and generates boilerplate BLoC, Event, and State code automatically.
@@ -53,14 +53,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'counter_bloc.g.dart';
 
-@BlocMeta(state: int)
+@BlocClass(state: int)
 final class CounterBloc extends _$CounterBloc {
   CounterBloc() : super(0);
 
-  @EventMeta()
+  @EventClass()
   void increment() => emit(state + 1);
 
-  @EventMeta()
+  @EventClass()
   void decrement() => emit(state - 1);
 }
 ```
@@ -73,7 +73,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'counter_cubit.g.dart';
 
-@CubitMeta(state: int)
+@CubitClass(state: int)
 final class CounterCubit extends _$CounterCubit {
   CounterCubit() : super(0);
 
@@ -97,43 +97,6 @@ dart run build_runner watch
 The generator supports global configuration options in `build.yaml` (e.g., enabling/disabling `copyWith`, `toString`, `equality`). See the [bloc_annotation_generator README](packages/bloc_annotation_generator/README.md#configuration) for details.
 
 Generated files will appear alongside your annotated source code.
-
-## State Inference
-
-There are two ways to specify the state type for BLoC and Cubit:
-
-### 1. Explicit State Parameter (Recommended)
-
-```dart
-@BlocMeta(state: int)
-final class CounterBloc extends _$CounterBloc {
-  CounterBloc() : super(0);
-  
-  @EventMeta()
-  void increment() => emit(state + 1);
-}
-```
-
-**Advantages:**
-- No linter warnings
-- Clear and explicit
-- Easier to read
-
-### 2. Field-Based Inference
-
-```dart
-@BlocMeta()
-final class CounterBloc extends _$CounterBloc {
-  CounterBloc() : super(0);
-  
-  @StateMeta()
-  // ignore: unused_field
-  late final int _state;
-  
-  @EventMeta()
-  void increment() => emit(state + 1);
-}
-```
 
 **Note:** Requires `// ignore: unused_field` comment to suppress linter warnings.
 

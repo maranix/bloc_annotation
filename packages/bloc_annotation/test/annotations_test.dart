@@ -70,30 +70,4 @@ void main() {
       expect(annotation.overrideToString, false);
     });
   });
-
-  group('StateMeta', () {
-    test('default values', () {
-      const annotation = StateMeta();
-      expect(annotation.name, '');
-      expect(annotation.copyWith, true);
-      expect(annotation.overrideEquality, true);
-      expect(annotation.overrideToString, true);
-      expect(annotation.isSealed, true);
-    });
-
-    test('custom values', () {
-      const annotation = StateMeta(
-        name: 'MyState',
-        copyWith: false,
-        overrideEquality: false,
-        overrideToString: false,
-        isSealed: false,
-      );
-      expect(annotation.name, 'MyState');
-      expect(annotation.copyWith, false);
-      expect(annotation.overrideEquality, false);
-      expect(annotation.overrideToString, false);
-      expect(annotation.isSealed, false);
-    });
-  });
 }

@@ -1,6 +1,6 @@
 # bloc_annotation_generator
 
-Code generator for `bloc_annotation`. This package processes `@BlocMeta`, `@CubitMeta`, `@EventMeta`, and `@StateMeta` annotations to generate boilerplate code for BLoC and Cubit classes.
+Code generator for `bloc_annotation`. This package processes `@BlocClass`, `@CubitClass`, and `@EventClass` annotations to generate boilerplate code for BLoC and Cubit classes.
 
 ## Features
 
@@ -58,7 +58,7 @@ targets:
 
 ### Examples
 
-#### BLoC with Explicit State Type (Recommended)
+#### BLoC with Explicit State Type
 
 Input:
 
@@ -68,14 +68,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'counter_bloc.g.dart';
 
-@BlocMeta(state: int)
+@BlocClass(state: int)
 final class CounterBloc extends _$CounterBloc {
   CounterBloc() : super(0);
 
-  @EventMeta()
+  @EventClass()
   void increment() => emit(state + 1);
 
-  @EventMeta()
+  @EventClass()
   void decrement() => emit(state - 1);
 }
 ```
@@ -108,30 +108,7 @@ abstract class _$CounterBloc extends Bloc<CounterBlocEvent, int> {
 }
 ```
 
-#### BLoC with Field-Based State Inference
-
-Input:
-
-```dart
-import 'package:bloc_annotation/bloc_annotation.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-part 'counter_bloc.g.dart';
-
-@BlocMeta()
-final class CounterBloc extends _$CounterBloc {
-  CounterBloc() : super(0);
-
-  @StateMeta()
-  // ignore: unused_field
-  late final int _state;
-
-  @EventMeta()
-  void increment() => emit(state + 1);
-}
-```
-
-#### Cubit with Explicit State Type (Recommended)
+#### Cubit with Explicit State Type
 
 Input:
 
@@ -141,7 +118,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'counter_cubit.g.dart';
 
-@CubitMeta(state: int)
+@CubitClass(state: int)
 final class CounterCubit extends _$CounterCubit {
   CounterCubit() : super(0);
 
@@ -161,47 +138,3 @@ abstract class _$CounterCubit extends Cubit<int> {
   _$CounterCubit(super.initialState);
 }
 ```
-
-#### Cubit with Field-Based State Inference
-
-Input:
-
-```dart
-import 'package:bloc_annotation/bloc_annotation.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-part 'counter_cubit.g.dart';
-
-@CubitMeta()
-final class CounterCubit extends _$CounterCubit {
-  CounterCubit() : super(0);
-
-  @StateMeta()
-  // ignore: unused_field
-  late final int _state;
-
-  void increment() => emit(state + 1);
-}
-```
-
-## State Inference Methods
-
-There are two ways to specify the state type:
-
-1. **Explicit State Parameter (Recommended):**
-   ```dart
-   @BlocMeta(state: int)
-   @CubitMeta(state: int)
-   ```
-   - No linter warnings
-   - Clear and explicit
-   - Easier to read
-
-2. **Field-Based Inference:**
-   ```dart
-   @StateMeta()
-   // ignore: unused_field
-   late final int _state;
-   ```
-   - Requires `// ignore: unused_field` comment
-   - Useful when you want to keep state type close to the class definition

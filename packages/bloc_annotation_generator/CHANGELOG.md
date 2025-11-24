@@ -8,3 +8,9 @@
 - Added `EventGenerator` for generating sealed event class hierarchies.
 - Added `GeneratorConfig` for global configuration options in `build.yaml`.
 - Added support for generating `copyWith`, `toString`, `hashCode`, and `operator ==` methods.
+
+### Changed
+- **Breaking**: Updated generators to support `@BlocClass`, `@CubitClass`, and `@EventClass`.
+
+### Removed
+- **Breaking**: Removed `StateGenerator` and support for `@StateMeta`.

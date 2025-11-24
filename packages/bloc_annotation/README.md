@@ -4,10 +4,9 @@ Annotations for the `bloc_annotation_generator` package. This package provides t
 
 ## Features
 
-- `@Bloc`: Annotate your class to generate a BLoC.
-- `@Cubit`: Annotate your class to generate a Cubit.
-- `@Event`: Annotate methods to generate BLoC events.
-- `@State`: Annotate a method or field to define the state type.
+- `@BlocClass`: Annotate your class to generate a BLoC.
+- `@CubitClass`: Annotate your class to generate a Cubit.
+- `@EventClass`: Annotate methods to generate BLoC events.
 
 ## Getting started
 
@@ -29,15 +28,12 @@ dev_dependencies:
 ```dart
 import 'package:bloc_annotation/bloc_annotation.dart';
 
-@Bloc()
+@BlocClass(state: int)
 class CounterBloc {
-  @State()
-  int state() => 0;
-
-  @Event()
+  @EventClass()
   void increment();
 
-  @Event()
+  @EventClass()
   void decrement();
 }
 ```
@@ -47,11 +43,8 @@ class CounterBloc {
 ```dart
 import 'package:bloc_annotation/bloc_annotation.dart';
 
-@Cubit()
+@CubitClass(state: int)
 class CounterCubit {
-  @State()
-  int state() => 0;
-
   void increment() => emit(state + 1);
   void decrement() => emit(state - 1);
 }
