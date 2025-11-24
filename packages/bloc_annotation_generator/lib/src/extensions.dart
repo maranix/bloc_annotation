@@ -36,16 +36,12 @@ extension ConstantReaderAnnotationPropertiesX on ConstantReader {
   /// [Cubit] annotation is provided via `bloc_annotation` package.
   CubitAnnotationProperties getCubitAnnotationProperties() {
     final baseProps = getBaseAnnotationProperties();
-    final state = read('state').isNull
-        ? null
-        : read('state').typeValue.getDisplayString();
 
     return (
       name: baseProps.name,
       copyWith: baseProps.copyWith,
       overrideEquality: baseProps.overrideEquality,
       overrideToString: baseProps.overrideToString,
-      state: state,
     );
   }
 
@@ -54,16 +50,12 @@ extension ConstantReaderAnnotationPropertiesX on ConstantReader {
   /// [Bloc] annotation is provided via `bloc_annotation` package.
   BlocAnnotationProperties getBlocAnnotationProperties() {
     final baseProps = getBaseAnnotationProperties();
-    final state = read('state').isNull
-        ? null
-        : read('state').typeValue.getDisplayString();
 
     return (
       name: baseProps.name,
       copyWith: baseProps.copyWith,
       overrideEquality: baseProps.overrideEquality,
       overrideToString: baseProps.overrideToString,
-      state: state,
     );
   }
 }

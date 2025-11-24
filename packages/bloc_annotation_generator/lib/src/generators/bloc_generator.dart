@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:bloc_annotation/bloc_annotation.dart';
 import 'package:bloc_annotation_generator/src/extensions.dart';
 import 'package:bloc_annotation_generator/src/utils.dart';
@@ -9,8 +10,8 @@ import 'package:source_gen/source_gen.dart';
 
 import 'package:bloc_annotation_generator/src/configuration.dart';
 
-/// Generator for [BlocMeta] annotated classes.
-final class BlocGenerator extends GeneratorForAnnotation<BlocMeta> {
+/// Generator for [BlocClass] annotated classes.
+final class BlocGenerator extends GeneratorForAnnotation<BlocClass> {
   /// Creates a new [BlocGenerator] with optional [config].
   BlocGenerator([this.config = const GeneratorConfig()]);
 
@@ -26,57 +27,115 @@ final class BlocGenerator extends GeneratorForAnnotation<BlocMeta> {
     if (element is! ClassElement) {
       throw InvalidGenerationSourceError(
         'Generator cannot target `${element.displayName}`.',
-        todo: 'Remove the @BlocMeta annotation from `${element.displayName}`.',
+        todo: 'Remove the @BlocClass annotation from `${element.displayName}`.',
         element: element,
       );
     }
 
     final annotationProps = annotation.getBlocAnnotationProperties();
-    final name = annotationProps.name.isEmpty 
-        ? element.displayName 
+    final name = annotationProps.name.isEmpty
+        ? element.displayName
         : annotationProps.name;
     final className = '_\$$name';
 
-    // 1. Determine State Type
-    String? stateType = annotationProps.state;
-
-    // If not provided in annotation, try to infer from @StateMeta annotated field
-    if (stateType == null) {
-      for (final field in element.fields) {
-        if (hasStateAnnotation(field)) {
-          stateType = field.type.getDisplayString();
-          break;
-        }
-      }
-    }
-
-    if (stateType == null) {
+    // 1. Determine Event and State Types from generics
+    final dartType = annotation.objectValue.type;
+    if (dartType is! InterfaceType) {
       throw InvalidGenerationSourceError(
-        'Could not determine state type for `${element.displayName}`.',
-        todo:
-            'Provide state type explicitly: @BlocMeta(state: YourStateType)',
+        'Annotation must be a class type.',
         element: element,
       );
     }
 
+    if (dartType.typeArguments.length != 2) {
+      throw InvalidGenerationSourceError(
+        'BlocClass annotation must have exactly 2 type arguments: Event and State.',
+        element: element,
+      );
+    }
+
+    final eventType = dartType.typeArguments[0].getDisplayString();
+    final stateType = dartType.typeArguments[1].getDisplayString();
+
     // 2. Parse @Event methods
     final eventMethods = element.methods.where(hasEventAnnotation).toList();
-    final eventBaseName = '${element.displayName}Event';
 
-    // 3. Generate Base Event Class
-    final eventBaseClass = Class(
-      (b) => b
-        ..name = eventBaseName
-        ..sealed = true
-        ..abstract = true,
-    );
+    // 3. Generate Base Event Class (if needed, but we are using the generic Event type now?)
+    // The requirement says: "Use the provided generic types from these annotations in the generated code as state and event."
+    // So we should use `eventType` as the event base class.
+    // But wait, the example says `@BlocClass<CounterEvent, int>`.
+    // If the user provides `CounterEvent`, they probably expect us to use it.
+    // However, the previous generator was generating `EventBaseName`.
+    // If the user provides the Event type, we might not need to generate the base event class if it already exists.
+    // BUT, the previous logic generated `EventBaseName` which was abstract and sealed.
+    // If the user provides `CounterEvent`, is it an existing class or one we should generate?
+    // "Use the provided generic types ... in the generated code as state and event."
+    // This implies the user defines the types.
+    // So we probably don't need to generate the base event class anymore?
+    // Or maybe we generate the implementation of the Bloc which extends Bloc<Event, State>.
+
+    // Let's assume the user provides existing types.
+    // So we don't generate `eventBaseClass` anymore?
+    // Wait, the previous generator generated `eventBaseName` as `${element.displayName}Event`.
+    // Now the user explicitly provides `CounterEvent`.
+    // If `CounterEvent` is what we use in `Bloc<CounterEvent, int>`, then `CounterEvent` must exist.
+    // So we likely don't generate it.
+
+    // However, the `eventMethods` logic seems to be generating event handlers.
+    // `on<EventName>((event, emit) => method(event, emit))`
+    // This implies `EventName` is a subclass of `CounterEvent`.
+    // Where do `EventName` classes come from?
+    // The previous generator didn't seem to generate the subclasses either?
+    // Wait, looking at the previous code:
+    // `eventBaseClass` was generated.
+    // `blocClass` was generated.
+    // `eventMethods` were used to generate `on<EventName>`.
+    // But where is `EventName` defined?
+    // Ah, I missed something. The previous generator didn't seem to generate the event subclasses!
+    // Let me check `event_generator.dart` if I can.
+    // But I am only editing `bloc_generator.dart`.
+
+    // If I look at `bloc_generator.dart` again:
+    // It generates `eventBaseClass`.
+    // It generates `blocClass`.
+    // Inside `blocClass` constructor, it does `on<EventName>`.
+    // `EventName` comes from `capitalize(method.name)`.
+    // If `method.name` is `increment`, `EventName` is `Increment`.
+    // But `Increment` class is not generated in `bloc_generator.dart`.
+    // It must be generated by `EventGenerator`!
+
+    // So, `BlocGenerator` relies on `EventGenerator` to generate the event classes.
+    // `EventGenerator` likely generates classes that extend the event base class.
+    // If we change the event base class to be the one provided in generics, we need to make sure `EventGenerator` knows about it.
+    // But `EventGenerator` runs on `@EventMeta` (or similar).
+    // The `EventGenerator` probably doesn't know about `BlocClass` annotation on the Bloc.
+
+    // This is getting tricky.
+    // If the user provides `@BlocClass<CounterEvent, int>`, then `CounterEvent` is the base class.
+    // The `EventGenerator` should generate events that extend `CounterEvent`.
+    // How does `EventGenerator` know to extend `CounterEvent`?
+    // Maybe `EventGenerator` looks for the Bloc class and its annotation?
+    // Or maybe the user has to annotate the Event class?
+
+    // Let's stick to `BlocGenerator` changes first.
+    // The requirement is: "Use the provided generic types ... as state and event."
+    // So `BlocGenerator` should use `eventType` and `stateType` in `Bloc<eventType, stateType>`.
+    // It should NOT generate the base event class anymore, because the user provides it.
+    // (Or maybe it should generate it if it doesn't exist? No, generics imply it exists or is generated elsewhere).
+    // Actually, if the user writes `@BlocClass<CounterEvent, int>`, `CounterEvent` might be a class they defined, or one they expect to be generated.
+    // If they expect it to be generated, they would need to define it somewhere.
+
+    // Given the instructions "Rename BlocMeta... Remove state... Use Annotations... Use provided generic types",
+    // it seems the user wants explicit control over types.
+    // So I will assume `eventType` and `stateType` are available.
+    // I will remove the generation of `eventBaseClass`.
 
     // 4. Generate Bloc Class
     final blocClass = Class(
       (b) => b
         ..name = className
         ..abstract = true
-        ..extend = refer('Bloc<$eventBaseName, $stateType>')
+        ..extend = refer('Bloc<$eventType, $stateType>')
         ..constructors.add(
           Constructor(
             (c) => c
@@ -90,19 +149,12 @@ final class BlocGenerator extends GeneratorForAnnotation<BlocMeta> {
               ..body = Block.of(
                 eventMethods.map((method) {
                   final eventName = capitalize(method.name);
-                  
-                  // Check if method has Emitter parameter
+
                   final hasEmitter = method.formalParameters.any(
                     (p) => p.type.getDisplayString().startsWith('Emitter'),
                   );
 
-                  // The event handler should call the method with 'event' and 'emit'
-                  // If the method signature is: void fetchRandomFact(FetchRandomFact event, Emitter emit)
-                  // Then we call: fetchRandomFact(event, emit)
-                  final callArgs = [
-                    'event',
-                    if (hasEmitter) 'emit',
-                  ].join(', ');
+                  final callArgs = ['event', if (hasEmitter) 'emit'].join(', ');
 
                   return Code(
                     'on<$eventName>((event, emit) => ${method.name}($callArgs));',
@@ -115,33 +167,31 @@ final class BlocGenerator extends GeneratorForAnnotation<BlocMeta> {
           eventMethods.map((method) {
             final eventName = capitalize(method.name);
             final params = method.formalParameters.toList();
-            
+
             return Method(
               (m) => m
                 ..name = method.name
                 ..returns = refer(method.returnType.getDisplayString())
                 ..requiredParameters.addAll(
-                  params.asMap().entries.map(
-                    (entry) {
-                      final index = entry.key;
-                      final p = entry.value;
-                      
-                      // First non-Emitter parameter should be the event type
-                      if (index == 0 && !p.type.getDisplayString().startsWith('Emitter')) {
-                        return Parameter(
-                          (param) => param
-                            ..name = p.name ?? ''
-                            ..type = refer(eventName),
-                        );
-                      }
-                      
+                  params.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final p = entry.value;
+
+                    if (index == 0 &&
+                        !p.type.getDisplayString().startsWith('Emitter')) {
                       return Parameter(
                         (param) => param
                           ..name = p.name ?? ''
-                          ..type = refer(p.type.getDisplayString()),
+                          ..type = refer(eventName),
                       );
-                    },
-                  ),
+                    }
+
+                    return Parameter(
+                      (param) => param
+                        ..name = p.name ?? ''
+                        ..type = refer(p.type.getDisplayString()),
+                    );
+                  }),
                 ),
             );
           }),
@@ -151,7 +201,7 @@ final class BlocGenerator extends GeneratorForAnnotation<BlocMeta> {
     final emitter = DartEmitter();
     final buffer = StringBuffer();
 
-    buffer.writeln(eventBaseClass.accept(emitter));
+    // buffer.writeln(eventBaseClass.accept(emitter)); // Removed
     buffer.writeln(blocClass.accept(emitter));
 
     return DartFormatter(

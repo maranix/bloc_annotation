@@ -12,7 +12,6 @@ typedef CubitAnnotationProperties = ({
   bool copyWith,
   bool overrideEquality,
   bool overrideToString,
-  String? state,
 });
 
 /// Properties described in [Bloc] annotaion from `bloc_annotation` package
@@ -21,7 +20,6 @@ typedef BlocAnnotationProperties = ({
   bool copyWith,
   bool overrideEquality,
   bool overrideToString,
-  String? state,
 });
 
 /// Record type for describing a attributes of a Class

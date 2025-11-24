@@ -7,14 +7,12 @@ import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
 Builder blocAnnotationGenerator(BuilderOptions options) {
+  print('blocAnnotationGenerator builder factory called');
   final config = GeneratorConfig.fromOptions(options);
-  return SharedPartBuilder(
-    [
-      BlocGenerator(config),
-      CubitGenerator(config),
-      StateGenerator(config),
-      EventGenerator(config),
-    ],
-    'bloc_annotation_generator',
-  );
+  return SharedPartBuilder([
+    BlocGenerator(config),
+    CubitGenerator(config),
+    StateGenerator(config),
+    EventGenerator(config),
+  ], 'bloc_annotation_generator');
 }

@@ -13,12 +13,9 @@ part 'counter_cubit.g.dart';
 //   void reset() => emit(0);
 // }
 
-@CubitMeta()
+@CubitClass<int>()
 final class CounterCubit extends _$CounterCubit {
   CounterCubit() : super(0);
-
-  @StateMeta()
-  late final int _state;
 
   void increment() => emit(state + 1);
 

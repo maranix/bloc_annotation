@@ -10,7 +10,11 @@ part 'random_fact_bloc.g.dart';
 
 const _randomFactURL = "https://uselessfacts.jsph.pl/api/v2/facts/random";
 
-@BlocMeta(state: List<Fact>)
+sealed class RandomFactEvent {}
+
+final class FetchRandomFact extends RandomFactEvent {}
+
+@BlocClass<RandomFactEvent, List<Fact>>()
 final class RandomFactBloc extends _$RandomFactBloc {
   RandomFactBloc({http.Client? client})
     : _client = client ?? http.Client(),
@@ -22,7 +26,7 @@ final class RandomFactBloc extends _$RandomFactBloc {
 
   List<Fact> get allFacts => state;
 
-  @EventMeta()
+  @override
   void fetchRandomFact(FetchRandomFact event, Emitter<List<Fact>> emit) async {
     try {
       final uri = Uri.tryParse(_randomFactURL);
@@ -46,6 +50,12 @@ final class RandomFactBloc extends _$RandomFactBloc {
       print('Something went wrong, Unable to fetch random fact.');
       print(stackTrace);
     }
+  }
+
+  @override
+  Future<void> close() {
+    _client.close();
+    return super.close();
   }
 }
 

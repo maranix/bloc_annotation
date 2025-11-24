@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:bloc_annotation/bloc_annotation.dart';
 import 'package:bloc_annotation_generator/src/configuration.dart';
 import 'package:bloc_annotation_generator/src/extensions.dart';
@@ -8,7 +9,7 @@ import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:source_gen/source_gen.dart';
 
-final class CubitGenerator extends GeneratorForAnnotation<CubitMeta> {
+final class CubitGenerator extends GeneratorForAnnotation<CubitClass> {
   /// Creates a new [CubitGenerator] with optional [config].
   CubitGenerator([this.config = const GeneratorConfig()]);
 
@@ -24,7 +25,8 @@ final class CubitGenerator extends GeneratorForAnnotation<CubitMeta> {
     if (element is! ClassElement) {
       throw InvalidGenerationSourceError(
         'Generator cannot target `${element.displayName}`.',
-        todo: 'Remove the @CubitMeta annotation from `${element.displayName}`.',
+        todo:
+            'Remove the @CubitClass annotation from `${element.displayName}`.',
         element: element,
       );
     }
@@ -36,26 +38,23 @@ final class CubitGenerator extends GeneratorForAnnotation<CubitMeta> {
       true => element.displayName,
     };
 
-    // 1. Determine State Type
-    String? stateType = annotationProps.state;
-
-    // If not provided in annotation, try to infer from @StateMeta annotated field
-    if (stateType == null) {
-      for (final field in element.fields) {
-        if (hasStateAnnotation(field)) {
-          stateType = field.type.getDisplayString();
-          break;
-        }
-      }
-    }
-
-    if (stateType == null) {
+    // 1. Determine State Type from generics
+    final dartType = annotation.objectValue.type;
+    if (dartType is! InterfaceType) {
       throw InvalidGenerationSourceError(
-        'Could not determine state type for `${element.displayName}`.',
-        todo: 'Provide state type explicitly: @CubitMeta(state: YourStateType)',
+        'Annotation must be a class type.',
         element: element,
       );
     }
+
+    if (dartType.typeArguments.length != 1) {
+      throw InvalidGenerationSourceError(
+        'CubitClass annotation must have exactly 1 type argument: State.',
+        element: element,
+      );
+    }
+
+    final stateType = dartType.typeArguments[0].getDisplayString();
 
     final shouldCopyWith = annotationProps.copyWith && config.copyWith;
     final shouldToString =
@@ -91,7 +90,7 @@ final class CubitGenerator extends GeneratorForAnnotation<CubitMeta> {
           if (shouldCopyWith && stateFields.isNotEmpty)
             Method(
               (m) => m
-                ..returns = refer(stateType!)
+                ..returns = refer(stateType)
                 ..name = 'copyWith'
                 ..optionalParameters.addAll(
                   stateFields.map(
@@ -103,7 +102,7 @@ final class CubitGenerator extends GeneratorForAnnotation<CubitMeta> {
                     ),
                   ),
                 )
-                ..body = Code(generateCopyWith(stateType!, stateFields)),
+                ..body = Code(generateCopyWith(stateType, stateFields)),
             ),
           // toString
           if (shouldToString)
