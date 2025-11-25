@@ -139,6 +139,7 @@ final class EventGenerator extends GeneratorForAnnotation<EventClass> {
                             ),
                           )
                           .toList(),
+                      hasState: false,
                     ),
                   ),
               ),
@@ -160,6 +161,7 @@ final class EventGenerator extends GeneratorForAnnotation<EventClass> {
                             ),
                           )
                           .toList(),
+                      hasState: false,
                     ),
                   ),
               ),
@@ -186,6 +188,7 @@ final class EventGenerator extends GeneratorForAnnotation<EventClass> {
                             ),
                           )
                           .toList(),
+                      hasState: false,
                     ),
                   ),
               ),

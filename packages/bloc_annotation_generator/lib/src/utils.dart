@@ -24,10 +24,7 @@ String capitalize(String? s) {
 }
 
 /// Generates a copyWith method body for the given state type and fields
-String generateCopyWith(
-  String stateType,
-  List<FieldInfo> fields,
-) {
+String generateCopyWith(String stateType, List<FieldInfo> fields) {
   if (fields.isEmpty) return 'return state;';
 
   final params = fields
@@ -38,42 +35,61 @@ String generateCopyWith(
 
 /// Generates a toString method body for the given name and fields
 String generateToString(
-  String name,
-  List<FieldInfo> fields,
-) {
-  if (fields.isEmpty) return '\'$name(state: \$state)\'';
+  String className,
+  List<FieldInfo> fields, {
+  bool hasState = true,
+}) {
+  final escapedName = className.replaceAll('\$', '\\\$');
+  if (fields.isEmpty) {
+    if (hasState) return '\'$escapedName(state: \$state)\'';
+    return '\'$escapedName()\'';
+  }
 
   final fieldStr = fields
-      .map((f) => '${f.name}: \${state.${f.name}}')
+      .map((f) {
+        if (hasState) {
+          return '${f.name}: \${state.${f.name}}';
+        } else {
+          return '${f.name}: \$${f.name}';
+        }
+      })
       .join(', ');
-  return '\'$name($fieldStr, state: \$state)\';';
+
+  if (hasState) return '\'$escapedName($fieldStr, state: \$state)\'';
+  return '\'$escapedName($fieldStr)\'';
 }
 
 /// Generates a hashCode getter body for the given fields
-String generateHashCode(List<FieldInfo> fields) {
-  if (fields.isEmpty) return 'state.hashCode';
+String generateHashCode(List<FieldInfo> fields, {bool hasState = true}) {
+  if (fields.isEmpty) return hasState ? 'state.hashCode' : '0';
 
-  final fieldNames = fields.map((f) => 'state.${f.name}').join(', ');
+  final fieldNames = fields
+      .map((f) => '${hasState ? 'state.' : ''}${f.name}')
+      .join(', ');
   return 'Object.hashAll([$fieldNames])';
 }
 
 /// Generates an equality operator body for the given name and fields
 String generateEquality(
-  String name,
-  List<FieldInfo> fields,
-) {
+  String className,
+  List<FieldInfo> fields, {
+  bool hasState = true,
+}) {
   if (fields.isEmpty) {
     return '''
 if (identical(this, other)) return true;
-return other is _\$$name && other.state == state;
+return other is $className && ${hasState ? 'other.state == state' : 'true'};
 ''';
   }
 
   final conditions = fields
-      .map((f) => 'state.${f.name} == other.state.${f.name}')
+      .map(
+        (f) =>
+            '${hasState ? 'state.' : ''}${f.name} == other.${hasState ? 'state.' : ''}${f.name}',
+      )
       .join(' && ');
   return '''
 if (identical(this, other)) return true;
-return other is _\$$name && $conditions;
+return other is $className && $conditions;
 ''';
 }

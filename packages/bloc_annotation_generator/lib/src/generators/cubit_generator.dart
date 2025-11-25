@@ -112,7 +112,9 @@ final class CubitGenerator extends GeneratorForAnnotation<CubitClass> {
                 ..returns = refer('String')
                 ..name = 'toString'
                 ..lambda = true
-                ..body = Code(generateToString(name, stateFields)),
+                ..body = Code(
+                  generateToString(name, stateFields, hasState: true),
+                ),
             ),
           // hashCode
           if (shouldEquality)
@@ -123,7 +125,7 @@ final class CubitGenerator extends GeneratorForAnnotation<CubitClass> {
                 ..type = MethodType.getter
                 ..name = 'hashCode'
                 ..lambda = true
-                ..body = Code(generateHashCode(stateFields)),
+                ..body = Code(generateHashCode(stateFields, hasState: true)),
             ),
           // operator ==
           if (shouldEquality)
@@ -139,7 +141,9 @@ final class CubitGenerator extends GeneratorForAnnotation<CubitClass> {
                       ..type = refer('Object'),
                   ),
                 )
-                ..body = Code(generateEquality(name, stateFields)),
+                ..body = Code(
+                  generateEquality("_\$$name", stateFields, hasState: true),
+                ),
             ),
         ]),
     );
