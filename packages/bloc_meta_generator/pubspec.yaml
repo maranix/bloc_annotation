@@ -6,11 +6,8 @@ repository: https://github.com/maranix/bloc_annotation
 issue_tracker: https://github.com/maranix/bloc_annotation/issues
 
 topics:
-  - builder
-  - build-runner
   - bloc
   - cubit
-  - code-generation
   - codegen
   - flutter
   - dart
