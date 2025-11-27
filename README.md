@@ -112,7 +112,7 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md) for guidelines.
 ## License
 
 MIT License.  
-See [`LICENSE`](https://github.com/Myrkheimr/bloc_annotation) for details.
+See [`LICENSE`](https://github.com/maranix/bloc_annotation) for details.
 
 ## Credits
 - Dart/Flutter community's efforts on building amazing code generation packages.

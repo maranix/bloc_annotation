@@ -10,7 +10,7 @@ final class InvalidSourceElementException implements Exception {
   final ElementKind expected;
 
   String get message =>
-      "Invalid element ${got.kind.displayName}, expected ${expected.displayName}";
+      'Invalid element ${got.kind.displayName}, expected ${expected.displayName}';
 
   @override
   String toString() => message;

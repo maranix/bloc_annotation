@@ -1,4 +1,4 @@
-/// Properties described in [BaseAnnotaion] from `bloc_annotation` package
+/// Properties described in [BaseAnnotation] from `bloc_annotation` package
 typedef BaseAnnotationProperties = ({
   String name,
   bool copyWith,

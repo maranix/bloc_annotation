@@ -1,16 +1,16 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:bloc_annotation/bloc_annotation.dart';
+import 'package:bloc_annotation_generator/src/configuration.dart';
+import 'package:bloc_annotation_generator/src/utils.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'package:bloc_annotation_generator/src/configuration.dart';
-import 'package:bloc_annotation_generator/src/utils.dart';
-
 /// Generator for [BlocClass] annotated classes.
-final class BlocGenerator extends GeneratorForAnnotation<BlocClass> {
+final class BlocGenerator
+    extends GeneratorForAnnotation<BlocClass<dynamic, dynamic>> {
   /// Creates a new [BlocGenerator] with optional [config].
   BlocGenerator([this.config = const GeneratorConfig()]);
 
@@ -131,9 +131,7 @@ final class BlocGenerator extends GeneratorForAnnotation<BlocClass> {
     );
 
     final emitter = DartEmitter();
-    final buffer = StringBuffer();
-
-    buffer.writeln(blocClass.accept(emitter));
+    final buffer = StringBuffer()..writeln(blocClass.accept(emitter));
 
     return DartFormatter(
       languageVersion: DartFormatter.latestLanguageVersion,

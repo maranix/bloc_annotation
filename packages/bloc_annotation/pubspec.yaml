@@ -1,10 +1,9 @@
 name: bloc_annotation
 description: Annotations for bloc_annotation code generation package
-version: 0.5.0
-homepage: https://github.com/Myrkheimr/bloc_annotation/tree/main/bloc_annotation
-repository: https://github.com/Myrkheimr/bloc_annotation
-issue_tracker: https://github.com/Myrkheimr/bloc_annotation/issues
-publish_to: none
+version: 1.0.0
+homepage: https://github.com/maranix/bloc_annotation/tree/main/bloc_annotation
+repository: https://github.com/maranix/bloc_annotation
+issue_tracker: https://github.com/maranix/bloc_annotation/issues
 
 topics:
   - annotation
@@ -22,5 +21,5 @@ dependencies:
   meta: ^1.17.0
 
 dev_dependencies:
-  lints: ^6.0.0
+  pedantic_mono: ^1.35.0
   test: ^1.25.6

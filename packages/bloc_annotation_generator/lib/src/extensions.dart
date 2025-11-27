@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/ast/ast.dart' show Annotation;
 import 'package:analyzer/dart/element/element.dart';
 import 'package:bloc_annotation_generator/src/types.dart';
 import 'package:source_gen/source_gen.dart';
@@ -25,15 +26,15 @@ extension ConstantReaderAnnotationPropertiesX on ConstantReader {
   /// [BaseAnnotation] class is provided via `bloc_annotation` package. This class
   /// describes the commonly inherited properties used by the [Annotation]'s.
   BaseAnnotationProperties getBaseAnnotationProperties() => (
-    name: read("name").stringValue,
-    copyWith: read("copyWith").boolValue,
-    overrideEquality: read("overrideEquality").boolValue,
-    overrideToString: read("overrideToString").boolValue,
+    name: read('name').stringValue,
+    copyWith: read('copyWith').boolValue,
+    overrideEquality: read('overrideEquality').boolValue,
+    overrideToString: read('overrideToString').boolValue,
   );
 
-  /// Extracts the [Cubit] annotation properties from the given ConstantReader
+  /// Extracts the [CubitClass] annotation properties from the given ConstantReader
   ///
-  /// [Cubit] annotation is provided via `bloc_annotation` package.
+  /// [CubitClass] annotation is provided via `bloc_annotation` package.
   CubitAnnotationProperties getCubitAnnotationProperties() {
     final baseProps = getBaseAnnotationProperties();
 
@@ -45,9 +46,9 @@ extension ConstantReaderAnnotationPropertiesX on ConstantReader {
     );
   }
 
-  /// Extracts the [Bloc] annotation properties from the given ConstantReader
+  /// Extracts the [BlocClass] annotation properties from the given ConstantReader
   ///
-  /// [Bloc] annotation is provided via `bloc_annotation` package.
+  /// [BlocClass] annotation is provided via `bloc_annotation` package.
   BlocAnnotationProperties getBlocAnnotationProperties() {
     final baseProps = getBaseAnnotationProperties();
 

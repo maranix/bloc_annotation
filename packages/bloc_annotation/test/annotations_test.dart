@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('BlocClass', () {
     test('default values', () {
-      const annotation = BlocClass();
+      const annotation = BlocClass<dynamic, dynamic>();
       expect(annotation.name, '');
       expect(annotation.copyWith, true);
       expect(annotation.overrideEquality, true);
@@ -12,7 +12,7 @@ void main() {
     });
 
     test('custom values', () {
-      const annotation = BlocClass(
+      const annotation = BlocClass<dynamic, dynamic>(
         name: 'MyBloc',
         copyWith: false,
         overrideEquality: false,
@@ -27,7 +27,7 @@ void main() {
 
   group('CubitClass', () {
     test('default values', () {
-      const annotation = CubitClass();
+      const annotation = CubitClass<dynamic>();
       expect(annotation.name, '');
       expect(annotation.copyWith, true);
       expect(annotation.overrideEquality, true);
@@ -35,7 +35,7 @@ void main() {
     });
 
     test('custom values', () {
-      const annotation = CubitClass(
+      const annotation = CubitClass<dynamic>(
         name: 'MyCubit',
         copyWith: false,
         overrideEquality: false,

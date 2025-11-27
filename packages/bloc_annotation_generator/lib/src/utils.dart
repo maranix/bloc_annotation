@@ -19,13 +19,17 @@ bool hasEventAnnotation(MethodElement method) {
 }
 
 String capitalize(String? s) {
-  if (s == null || s.isEmpty) return s ?? '';
+  if (s == null || s.isEmpty) {
+    return s ?? '';
+  }
   return s[0].toUpperCase() + s.substring(1);
 }
 
 /// Generates a copyWith method body for the given state type and fields
 String generateCopyWith(String stateType, List<FieldInfo> fields) {
-  if (fields.isEmpty) return 'return state;';
+  if (fields.isEmpty) {
+    return 'return state;';
+  }
 
   final params = fields
       .map((f) => '${f.name}: ${f.name} ?? state.${f.name}')
@@ -41,7 +45,9 @@ String generateToString(
 }) {
   final escapedName = className.replaceAll('\$', '\\\$');
   if (fields.isEmpty) {
-    if (hasState) return '\'$escapedName(state: \$state)\'';
+    if (hasState) {
+      return '\'$escapedName(state: \$state)\'';
+    }
     return '\'$escapedName()\'';
   }
 
@@ -55,13 +61,17 @@ String generateToString(
       })
       .join(', ');
 
-  if (hasState) return '\'$escapedName($fieldStr, state: \$state)\'';
+  if (hasState) {
+    return '\'$escapedName($fieldStr, state: \$state)\'';
+  }
   return '\'$escapedName($fieldStr)\'';
 }
 
 /// Generates a hashCode getter body for the given fields
 String generateHashCode(List<FieldInfo> fields, {bool hasState = true}) {
-  if (fields.isEmpty) return hasState ? 'state.hashCode' : '0';
+  if (fields.isEmpty) {
+    return hasState ? 'state.hashCode' : '0';
+  }
 
   final fieldNames = fields
       .map((f) => '${hasState ? 'state.' : ''}${f.name}')

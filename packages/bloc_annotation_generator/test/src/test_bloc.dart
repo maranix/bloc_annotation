@@ -31,7 +31,7 @@ final class TestBloc extends _$TestBloc {
 
 abstract class _$TestBloc extends Bloc<TestBlocEvent, int> {
   _$TestBloc(super.initialState) {
-    on<_$TestBlocIncrement>((event, emit) => _onIncrement(event, emit));
+    on<_$TestBlocIncrement>(_onIncrement);
   }
 
   void _onIncrement(_$TestBlocIncrement event, Emitter<int> emit);

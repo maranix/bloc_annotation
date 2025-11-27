@@ -51,7 +51,9 @@ mixin ToStringProducer on ClassCodeProducer {
 
   String overrideToString() {
     if (attributes.isEmpty) {
-      if (stringifyState) return '\'$name(state: \$state)\'';
+      if (stringifyState) {
+        return '\'$name(state: \$state)\'';
+      }
       return '\'$name()\'';
     }
 
@@ -109,8 +111,7 @@ final class BasicClassCodeProducer extends ClassCodeProducer
     final producer = BasicClassCodeProducer(
       element,
       stringifyState: stringifyState,
-    );
-    producer.collectAttributes();
+    )..collectAttributes();
 
     return producer;
   }
@@ -180,7 +181,9 @@ final class EventCodeProducer extends ClassCodeProducer
   }
 
   String _capitalize(String s) {
-    if (s.isEmpty) return s;
+    if (s.isEmpty) {
+      return s;
+    }
     return s[0].toUpperCase() + s.substring(1);
   }
 }

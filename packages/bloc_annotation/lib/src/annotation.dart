@@ -1,6 +1,6 @@
 abstract class BaseAnnotation {
   const BaseAnnotation({
-    this.name = "",
+    this.name = '',
     this.copyWith = true,
     this.overrideEquality = true,
     this.overrideToString = true,
@@ -13,16 +13,16 @@ abstract class BaseAnnotation {
 
   /// Attribute indicating whether to enable copyWith method generation.
   ///
-  /// Defaults to [true].
+  /// Defaults to true.
   final bool copyWith;
 
   /// Attribute indicating whether to override `==` and `hashCode`.
   ///
-  /// Defaults to [true].
+  /// Defaults to true.
   final bool overrideEquality;
 
   /// Attribute indicating whether to override `==` and `hashCode`.
   ///
-  /// Defaults to [true].
+  /// Defaults to true.
   final bool overrideToString;
 }

@@ -9,7 +9,7 @@ import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:source_gen/source_gen.dart';
 
-final class CubitGenerator extends GeneratorForAnnotation<CubitClass> {
+final class CubitGenerator extends GeneratorForAnnotation<CubitClass<dynamic>> {
   /// Creates a new [CubitGenerator] with optional [config].
   CubitGenerator([this.config = const GeneratorConfig()]);
 
@@ -71,7 +71,7 @@ final class CubitGenerator extends GeneratorForAnnotation<CubitClass> {
     final generatedClass = Class(
       (b) => b
         ..abstract = true
-        ..name = "_\$$name"
+        ..name = '_\$$name'
         ..extend = refer('Cubit<$stateType>')
         ..constructors.add(
           Constructor(
@@ -80,7 +80,7 @@ final class CubitGenerator extends GeneratorForAnnotation<CubitClass> {
                 Parameter(
                   (p) => p
                     ..toSuper = true
-                    ..name = "initialState",
+                    ..name = 'initialState',
                 ),
               ),
           ),
@@ -113,7 +113,7 @@ final class CubitGenerator extends GeneratorForAnnotation<CubitClass> {
                 ..name = 'toString'
                 ..lambda = true
                 ..body = Code(
-                  generateToString(name, stateFields, hasState: true),
+                  generateToString(name, stateFields),
                 ),
             ),
           // hashCode
@@ -125,7 +125,7 @@ final class CubitGenerator extends GeneratorForAnnotation<CubitClass> {
                 ..type = MethodType.getter
                 ..name = 'hashCode'
                 ..lambda = true
-                ..body = Code(generateHashCode(stateFields, hasState: true)),
+                ..body = Code(generateHashCode(stateFields)),
             ),
           // operator ==
           if (shouldEquality)
@@ -142,7 +142,7 @@ final class CubitGenerator extends GeneratorForAnnotation<CubitClass> {
                   ),
                 )
                 ..body = Code(
-                  generateEquality("_\$$name", stateFields, hasState: true),
+                  generateEquality('_\$$name', stateFields),
                 ),
             ),
         ]),
@@ -152,6 +152,6 @@ final class CubitGenerator extends GeneratorForAnnotation<CubitClass> {
 
     return DartFormatter(
       languageVersion: DartFormatter.latestLanguageVersion,
-    ).format("${generatedClass.accept(emitter)}");
+    ).format('${generatedClass.accept(emitter)}');
   }
 }

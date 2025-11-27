@@ -43,10 +43,14 @@ final class EventGenerator extends GeneratorForAnnotation<EventClass> {
 
     // Iterate over factory constructors
     for (final constructor in element.constructors) {
-      if (!constructor.isFactory) continue;
+      if (!constructor.isFactory) {
+        continue;
+      }
 
       // Skip default factory if any? Usually named factories are used.
-      if (constructor.name?.isEmpty ?? true) continue;
+      if (constructor.name?.isEmpty ?? true) {
+        continue;
+      }
 
       // The factory may not have a resolved redirectedConstructor yet (the part file is being generated).
       // In that case we derive the generated class name using the convention
@@ -93,7 +97,7 @@ final class EventGenerator extends GeneratorForAnnotation<EventClass> {
             Constructor(
               (c) => c
                 ..constant =
-                    true // TODO: Check if fields allow const and parent has const constructor
+                    true // TODO(maranix): Check if fields allow const and parent has const constructor
                 ..requiredParameters.addAll(
                   params
                       .where((p) => !p.isNamed)
