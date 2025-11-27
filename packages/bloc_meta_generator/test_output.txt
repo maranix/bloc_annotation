@@ -1,50 +1,0 @@
-00:00 [32m+0[0m: [1m[90mloading test/bloc_generator_test.dart[0m[0m                                                                                                                                                        00:01 [32m+0[0m: [1m[90mloading test/bloc_generator_test.dart[0m[0m                                                                                                                                                        00:02 [32m+0[0m: [1m[90mloading test/bloc_generator_test.dart[0m[0m                                                                                                                                                        00:03 [32m+0[0m: [1m[90mloading test/bloc_generator_test.dart[0m[0m                                                                                                                                                        00:04 [32m+0[0m: [1m[90mloading test/bloc_generator_test.dart[0m[0m                                                                                                                                                          0s _ResolveSourceBuilder<LibraryElement> on 7 inputs; $package$
-  0s _ResolveSourceBuilder<LibraryElement> on 7 inputs: 1 no-op; lib/$lib$
-00:05 [32m+0[0m: [1m[90mloading test/bloc_generator_test.dart[0m[0m                                                                                                                                                        00:06 [32m+0[0m: [1m[90mloading test/bloc_generator_test.dart[0m[0m                                                                                                                                                          2s _ResolveSourceBuilder<LibraryElement> on 7 inputs: 4 no-op; spent 1s analyzing; lib/test_event.dart
-  2s _ResolveSourceBuilder<LibraryElement> on 7 inputs: 7 no-op; spent 1s analyzing
-00:07 [32m+0[0m: [1m[90mloading test/bloc_generator_test.dart[0m[0m                                                                                                                                                          Built with build_runner/jit in 3s; wrote 0 outputs.
-00:08 [32m+0[0m: [1m[90mloading test/bloc_generator_test.dart[0m[0m                                                                                                                                                        00:09 [32m+0[0m: [1m[90mloading test/bloc_generator_test.dart[0m[0m                                                                                                                                                        00:10 [32m+0[0m: [1m[90mloading test/bloc_generator_test.dart[0m[0m                                                                                                                                                          0s _ResolveSourceBuilder<LibraryElement> on 7 inputs; spent 1s analyzing; $package$
-  0s _ResolveSourceBuilder<LibraryElement> on 7 inputs: 1 no-op; spent 1s analyzing; lib/$lib$
-  0s _ResolveSourceBuilder<LibraryElement> on 7 inputs: 7 no-op; spent 2s analyzing
-  Built with build_runner/jit in 7s; wrote 0 outputs.
-00:11 [32m+0[0m: [1m[90mloading test/bloc_generator_test.dart[0m[0m                                                                                                                                                        00:12 [32m+0[0m: [1m[90mloading test/bloc_generator_test.dart[0m[0m                                                                                                                                                          0s _ResolveSourceBuilder<LibraryElement> on 7 inputs; spent 2s analyzing; $package$
-  0s _ResolveSourceBuilder<LibraryElement> on 7 inputs: 1 no-op; spent 2s analyzing; lib/$lib$
-  0s _ResolveSourceBuilder<LibraryElement> on 7 inputs: 7 no-op; spent 2s analyzing
-  Built with build_runner/jit in 9s; wrote 0 outputs.
-00:12 [32m+0[0m: TestCubit[0m                                                                                                                                                                                    00:12 [32m+1[0m: TestCubit[0m                                                                                                                                                                                    00:12 [32m+1[0m: TestBloc[0m                                                                                                                                                                                     00:13 [32m+1[0m[31m -1[0m: TestBloc [1m[31m[E][0m[0m                                                                                                                                                                              
-  Expected: 'sealed class TestBlocEvent {}\n'
-              '\n'
-              'final class _$TestBlocEventIncrement extends TestBlocEvent {\n'
-              '  const _$TestBlocEventIncrement();\n'
-              '}\n'
-              '\n'
-              'abstract class _$TestBloc extends Bloc<TestBlocEvent, int> {\n'
-              '  _$TestBloc(super.initialState) {\n'
-              '    on<_$TestBlocEventIncrement>((event, emit) => _onIncrement(event, emit));\n'
-              '  }\n'
-              '\n'
-              '  void _onIncrement(_$TestBlocEventIncrement event, Emitter<int> emit);\n'
-              '}\n'
-              ''
-    Actual: 'abstract class _$TestBloc extends Bloc<TestBlocEvent, int> {\n'
-              '  _$TestBloc(super.initialState) {}\n'
-              '}\n'
-              ''
-     Which: is different.
-            Expected: sealed cla ...
-              Actual: abstract c ...
-                      ^
-             Differ at offset 0
-  
-  package:matcher                                                expect
-  package:source_gen_test/src/test_annotated_classes.dart 258:7  AnnotatedTest._shouldGenerateTest
-  
-ACTUAL CONTENT:
-r'''
-abstract class _$TestBloc extends Bloc<TestBlocEvent, int> {
-  _$TestBloc(super.initialState) {}
-}
-'''
-
-[1m[36mTo run this test again:[0m /Users/maranix/flutter/bin/cache/dart-sdk/bin/dart test test/bloc_generator_test.dart -p vm --plain-name 'TestBloc'
-00:13 [32m+1[0m[31m -1[0m: TestBlocEvent[0m                                                                                                                                                                             00:13 [32m+2[0m[31m -1[0m: TestBlocEvent[0m                                                                                                                                                                             00:13 [32m+2[0m[31m -1[0m: (tearDownAll)[0m                                                                                                                                                                             00:13 [32m+2[0m[31m -1[0m: [31mSome tests failed.[0m                                                                                                                                                                        
