@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/maranix/bloc_meta/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: 📖 Documentation
+    url: https://github.com/maranix/bloc_meta#readme
+    about: Read the official documentation
+  - name: 🎯 BLoC Package
+    url: https://github.com/felangel/bloc
+    about: Visit the official BLoC package repository
+  - name: 💡 Stack Overflow
+    url: https://stackoverflow.com/questions/tagged/flutter-bloc
+    about: Ask general BLoC questions on Stack Overflow

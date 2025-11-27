@@ -1,9 +1,9 @@
 name: bloc_meta_generator
 description: Code generator for bloc_meta package
 version: 1.0.0
-homepage: https://github.com/maranix/bloc_annotation/tree/main/bloc_meta_generator
-repository: https://github.com/maranix/bloc_annotation
-issue_tracker: https://github.com/maranix/bloc_annotation/issues
+homepage: https://github.com/maranix/bloc_meta/tree/main/bloc_meta_generator
+repository: https://github.com/maranix/bloc_meta
+issue_tracker: https://github.com/maranix/bloc_meta/issues
 
 topics:
   - bloc

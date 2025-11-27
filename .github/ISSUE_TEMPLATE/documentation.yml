@@ -1,0 +1,88 @@
+name: 📚 Documentation
+description: Report an issue or suggest improvements to documentation
+title: "[DOCS]: "
+labels: ["documentation", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve our documentation! Please fill out the form below.
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      description: Which package's documentation needs improvement?
+      options:
+        - bloc_meta
+        - bloc_meta_generator
+        - Both
+        - General (README, CONTRIBUTING, etc.)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Documentation Type
+      description: What type of documentation issue is this?
+      options:
+        - Missing documentation
+        - Incorrect/outdated documentation
+        - Unclear/confusing documentation
+        - Typo/grammar issue
+        - Code example issue
+        - API documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: location
+    attributes:
+      label: Documentation Location
+      description: Where is the documentation issue located?
+      placeholder: |
+        - File: README.md
+        - Section: Usage > BLoC Example
+        - Line: 65
+        - URL: https://github.com/maranix/bloc_meta/...
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: Issue Description
+      description: Describe the documentation issue
+      placeholder: The current documentation says... but it should say...
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested Improvement
+      description: How should the documentation be improved?
+      placeholder: I suggest changing it to...
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context or screenshots about the documentation issue here
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched for existing documentation issues to avoid duplicates
+          required: true
+        - label: I am willing to submit a PR to fix this documentation issue
+          required: false
